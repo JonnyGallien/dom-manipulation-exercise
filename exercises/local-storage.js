@@ -38,3 +38,55 @@
  */
 
 // Your code goes here...
+
+const container = document.querySelector('.cardsContainer');
+
+function makeWhite(id) {
+  const cards = Array.from(container.children);
+  cards[(Number(id) - 1)].style.backgroundColor = 'white';
+}
+
+function removeFromLs(id) {
+  const prevArr = JSON.parse(localStorage.getItem('redArr'));
+  const index = prevArr.indexOf(id);
+  const redArr = prevArr;
+  redArr.splice(index, 1);
+  localStorage.setItem('redArr', JSON.stringify(redArr));
+  makeWhite(id);
+}
+
+function addToLs(id) {
+  const prevArr = JSON.parse(localStorage.getItem('redArr'));
+  if (prevArr === null) {
+    const redArr = [];
+    redArr.push(id);
+    localStorage.setItem('redArr', JSON.stringify(redArr));
+  } else {
+    const redArr = prevArr;
+    redArr.push(id);
+    localStorage.setItem('redArr', JSON.stringify(redArr));
+  }
+}
+
+function makeRed() {
+  const redArr = JSON.parse(localStorage.getItem('redArr'));
+  redArr.forEach((id) => {
+    const elm = document.getElementById(id);
+    if (elm) {
+      elm.style.background = 'red';
+    }
+  })
+}
+
+container.addEventListener('click', (e) => {
+  const event = e.target;
+  if (Array.from(event.classList).includes('card')) {
+    if (event.style.backgroundColor === 'red') {
+      removeFromLs(event.id);
+    } else {
+      addToLs(event.id);
+    }
+  }
+  makeRed();
+})
+makeRed();

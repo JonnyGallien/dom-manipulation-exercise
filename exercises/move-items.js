@@ -12,6 +12,8 @@
  */
 
 // Your code goes here...
+const nodeList = document.getElementsByClassName('item');
+const allItems = Array.from(nodeList);
 
 
 
@@ -23,7 +25,7 @@
  * */
 
 // Your code goes here
-
+const main = document.getElementById('main');
 
 
 /**
@@ -34,7 +36,7 @@
  */
 
 // Your code goes here
-
+const favs = document.getElementById('favs');
 
 
 /**
@@ -48,6 +50,35 @@
 
 // Your code goes here
 
+function removePrevElm(id) {
+  const elm = document.getElementById(id);
+  elm.remove()
+}
+
+function addNewElm(newClass, id, location) {
+  const newChild = document.createElement('div');
+  newChild.setAttribute('id', id);
+  newChild.classList.add('item');
+  const newI = document.createElement('i');
+  newI.classList.add('fa-solid');
+  newI.classList.add(newClass);
+  newChild.appendChild(newI);
+  newChild.appendChild(document.createTextNode(`Card Title ${id}`));
+  location.appendChild(newChild);
+  addEvent(newChild);
+}
+
+function updateCollections(id, direction) {
+  const mainI = 'fa-heart-circle-plus';
+  const favsI = 'fa-heart-crack';
+  removePrevElm(id);
+  console.log(direction);
+  if (direction === 'toMain') {
+    addNewElm(mainI, id, main)
+  } else {
+    addNewElm(favsI, id, favs);
+  }
+}
 
 
 /**
@@ -65,5 +96,18 @@
  */
 
 // Your code goes here...
+function addEvent(item) {
+  item.addEventListener('click', function() {
+    const itemId = this.id;
+    const itemParentId = this.parentNode.id;
+    const direction = itemParentId === 'main' ? 'toFavs' : 'toMain' ;
+    updateCollections(itemId, direction);
+  })
+}
+
+
+for (item of allItems) {
+  addEvent(item);
+}
 
 
